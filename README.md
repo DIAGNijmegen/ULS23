@@ -8,10 +8,13 @@ The annotations folder contains the labels for the training data of the ULS23 Ch
 To download the associated imaging data, visit: 
 - [Part 1](https://zenodo.org/records/10035161): Novel annotated data (ULS23_DeepLesion3D, ULS23_Radboudumc_Bone, ULS23_Radboudumc_Pancreas)
 - [Part 2](https://zenodo.org/records/10050960): Processed data (kits21, LIDC-IDRI, LiTS)
-- Part 3: Processed data (MDSC task 6/7/10, NIH-LN, CCC18), download link will be added soon.
-- Part 4: Processed data (DeepLesion), download link will be added soon.
-- Part 5: Processed data (DeepLesion), download link will be added soon.
-- Part 6: Processed data (DeepLesion), download link will be added soon.
+- [Part 3](https://zenodo.org/records/10054306): Processed data (MDSC task 6/7/10, NIH-LN, CCC18)
+- [Part 4](https://zenodo.org/records/10054702): Processed data (DeepLesion)
+- [Part 5](https://zenodo.org/records/10055808): Processed data (DeepLesion), download link will be added soon.
+- [Part 6](https://zenodo.org/records/10056235): Processed data (DeepLesion), download link will be added soon.
+
+_Note: when using MONAI to work with the data please ensure you are on version >= 1.2.0. 
+We have had reports of problems when loading the data using older versions._
 
 #### Novel data annotation procedure:
 
