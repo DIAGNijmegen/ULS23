@@ -10,8 +10,8 @@ To download the associated imaging data, visit:
 - [Part 2](https://zenodo.org/records/10050960): Processed data (kits21, LIDC-IDRI, LiTS)
 - [Part 3](https://zenodo.org/records/10054306): Processed data (MDSC task 6/7/10, NIH-LN, CCC18)
 - [Part 4](https://zenodo.org/records/10054702): Processed data (DeepLesion)
-- [Part 5](https://zenodo.org/records/10055808): Processed data (DeepLesion), download link will be added soon.
-- [Part 6](https://zenodo.org/records/10056235): Processed data (DeepLesion), download link will be added soon.
+- [Part 5](https://zenodo.org/records/10055808): Processed data (DeepLesion)
+- [Part 6](https://zenodo.org/records/10056235): Processed data (DeepLesion)
 
 _Note: when using MONAI to work with the data please ensure you are on version >= 1.2.0. 
 We have had reports of problems when loading the data using older versions._
