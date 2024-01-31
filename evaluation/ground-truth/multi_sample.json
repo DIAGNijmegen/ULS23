@@ -1,0 +1,16 @@
+[ // For each lesion with multiple samples
+    [ // We need a list of the comparison pairs
+        [ // If we have three samples we can compare ab, ac, bc
+            2, // index of a in stack
+            4, // index of b in stack
+            [
+                -6.84375, // x-
+                -8.046875, // y-
+                -3.0 // z-translation in mm required to align b to a
+            ]
+        ],
+        ...
+    ],
+    ...
+    ]
+]

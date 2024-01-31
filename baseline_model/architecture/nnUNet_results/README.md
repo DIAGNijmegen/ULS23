@@ -1,0 +1,1 @@
+Place the model weights and plans file from the nnUnet results folder here when building the container.

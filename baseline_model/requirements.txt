@@ -1,0 +1,8 @@
+evalutils==0.4.2
+nibabel==5.1.0
+pillow==9.4.0
+numpy==1.24.4
+scikit-image==0.19.3
+scipy==1.10.1
+click==8.1.5
+batchgenerators==0.23
