@@ -38,7 +38,7 @@ To prevent resampling we have created a dummy resampling function 'no_resampling
 We also provide additional trainer classes to be able to train for more epochs and with a smaller starting learning rate. 
 We used these when fine-tuning our baseline model pre-trained on the weakly annotated data.
 
-Model weights and the 3D predictions of the best performing baseline model for the weakly-annotated data are stored on Zenodo: (download link added soon).
+[Model weights and the algorithm container](https://zenodo.org/records/10665107) of the best performing baseline model for the weakly-annotated data are stored on Zenodo. It can also be [used directly](https://grand-challenge.org/algorithms/universal-lesion-segmentation-uls23-baseline/) on novel data from GrandChallenge.
 
 We also include the data split used for testing on the combined, fully-annotated training datasets and the plans files.
 
