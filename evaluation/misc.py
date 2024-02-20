@@ -180,3 +180,13 @@ def align_images(imageB, spacing, shift_x, shift_y, shift_z):
     resampled_array = shift(imageB, (-shift_x, -shift_y, shift_z), mode='nearest')
 
     return resampled_array
+
+def sape(y_true, y_pred):
+    """
+    Calculates the symmetric absolute percentage error between two measurements
+    """
+    denominator = abs(y_true) + abs(y_pred)
+    if denominator == 0:
+        return 0  # Return 0 if both y_true and y_pred are 0
+    else:
+        return abs(y_pred - y_true) / denominator

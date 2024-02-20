@@ -8,7 +8,7 @@ import json
 import statistics
 import numpy as np
 from pathlib import Path
-from misc import load_predictions_json, long_and_short_axis_diameters, dice_coefficient, create_scores_dict, align_images
+from misc import load_predictions_json, long_and_short_axis_diameters, dice_coefficient, create_scores_dict, align_images, sape
 
 class ULS23_evaluator():
     def __init__(self):
@@ -66,10 +66,8 @@ class ULS23_evaluator():
 
                 scores["case"]["SegmentationDice"][idx] = dice_coefficient(gt_voi, pred_voi)
 
-                # Only calculate measurement error when the model made a prediction
-                if np.amax(pred_voi) > 0:
-                    scores["case"]["LongAxisErrorPercentage"][idx] = abs(gt_long - pred_long) / gt_long
-                    scores["case"]["ShortAxisErrorPercentage"][idx] = abs(gt_short - pred_short) / gt_short
+                scores["case"]["LongAxisErrorPercentage"][idx] = sape(gt_long, pred_long)
+                scores["case"]["ShortAxisErrorPercentage"][idx] = sape(gt_short, pred_short)
                     
                 scores["case"]["fn"][idx] = f"file_{file_id}_lesion_{idx}"
 
