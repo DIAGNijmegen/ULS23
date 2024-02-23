@@ -34,6 +34,7 @@ RUN git config --global advice.detachedHead false && \
 RUN pip3 install \
         -e /opt/algorithm/nnunet \
         graphviz \
+        onnx \
         SimpleITK && \
     rm -rf ~/.cache/pip
 
@@ -51,6 +52,7 @@ WORKDIR /opt/app
 ENV PATH="/home/user/.local/bin:${PATH}"
 
 COPY --chown=user:user process.py /opt/app/
+COPY --chown=user:user export2onnx.py /opt/app/
 
 ### ALGORITHM
 
