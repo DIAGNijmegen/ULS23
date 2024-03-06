@@ -52,9 +52,9 @@ class Uls23(SegmentationAlgorithm):
         )
         # Initialize the network architecture, loads the checkpoint
         self.predictor.initialize_from_trained_model_folder(
-            "/opt/algorithm/nnunet/nnUNet_results/Dataset400_FSUP_ULS/nnUNetTrainer_ULS_500_QuarterLR__nnUNetPlansNoRs__3d_fullres_resenc",
+            "/opt/algorithm/nnunet/nnUNet_results/Dataset901_Filtered_FSUP/nnUNetTrainer_ULS_500_QuarterLR__nnUNetPlansNoRs__3d_fullres_resenc",
             use_folds=("all"),
-            checkpoint_name="checkpoint_final.pth",
+            checkpoint_name="checkpoint_best.pth",
         )
         end_model_load_time = time.time()
         print(f"Model loading runtime: {end_model_load_time - start_model_load_time}s")
