@@ -1,3 +1,4 @@
+import os
 import numpy as np
 from copy import deepcopy
 from monai.data import NibabelReader, MetaTensor
@@ -49,100 +50,104 @@ class FullyAnnotatedLesionExtractor(object):
         self.one_lesion_per_scan = one_lesion_per_scan
 
     def process_dataset(self, data):
+        done = [x.split("_lesion")[0] for x in os.listdir(self.output_path + "/labelsTr")]
         for case in data:
             self.amin = 0
             case_id = case["img"].split("/")[-1].split(".")[0]
             print("Case:", case["img"])
-
-            initial_operations = [
-                LoadImaged(keys=["img", "seg"], image_only=False),
-                EnsureChannelFirstd(keys=["img", "seg"], channel_dim="no_channel"),
-                # NormalizeIntensityd(keys="img"), # Uncomment if you want to normalize based on the full volumes
-                Orientationd(keys=["img", "seg"], axcodes="RAS"),
-                Lambdad(keys=["seg"], func=self.instance_segmentation_converter),
-            ]
-            if self.one_lesion_per_scan:
-                initial_operations.append(
-                    KeepLargestConnectedComponentd(keys=["seg"], independent=False)
-                )
-
-            load_data = Compose(initial_operations)
-            case_data = load_data(case)
-
-            pad_data = Compose(
-                [
-                    BorderPadd(
-                        keys=["img"],
-                        spatial_border=(
-                            self.height_width // 2,
-                            self.height_width // 2,
-                            self.depth // 2,
-                        ),
-                        mode="constant",
-                        constant_values=np.amin(case_data["img"]), # -1 so we can re-identify padded area later
-                        value=np.amin(case_data["img"]),
-                    ),
-                    BorderPadd(
-                        keys=["seg"],
-                        spatial_border=(
-                            self.height_width // 2,
-                            self.height_width // 2,
-                            self.depth // 2,
-                        ),
-                        mode="constant",
-                        constant_values=0,
-                        value=0,
-                    ),
+            if case_id not in done:
+                initial_operations = [
+                    LoadImaged(keys=["img", "seg"], image_only=False),
+                    EnsureChannelFirstd(keys=["img", "seg"], channel_dim="no_channel"),
+                    # NormalizeIntensityd(keys="img"), # Uncomment if you want to normalize based on the full volumes
+                    Orientationd(keys=["img", "seg"], axcodes="RAS"),
+                    Lambdad(keys=["seg"], func=self.instance_segmentation_converter),
                 ]
-            )
-            case_data = pad_data(case_data)
+                if self.one_lesion_per_scan:
+                    initial_operations.append(
+                        KeepLargestConnectedComponentd(keys=["seg"], independent=False)
+                    )
 
-            for lesion_nr in self.lesions_to_process:
-                print("Selecting lesion number", lesion_nr)
-                self.lesion_nr = lesion_nr
+                load_data = Compose(initial_operations)
+                case_data = load_data(case)
 
-                img_out_path = FolderLayoutULS(
-                    case_id=case_id,
-                    output_dir=self.output_path + "/imagesTr",
-                    postfix=f"_lesion_{self.lesion_nr:02d}_sample_",
-                    extension=".nii.gz",
-                )
-                seg_out_path = FolderLayoutULS(
-                    case_id=case_id,
-                    output_dir=self.output_path + "/labelsTr",
-                    postfix=f"_lesion_{self.lesion_nr:02d}_sample_",
-                    extension=".nii.gz",
-                )
-                crop_lesion_volume = Compose(
+                pad_data = Compose(
                     [
-                        Lambdad(keys=["seg"], func=self.lesion_selector),
-                        RandCropByPosNegLabeld(
-                            keys=["img", "seg"],
-                            spatial_size=(
-                                self.height_width,
-                                self.height_width,
-                                self.depth,
-                            ),
-                            label_key="seg",
-                            neg=0,
-                            num_samples=self.num_samples,
-                        ),
-                        SaveImaged(
+                        BorderPadd(
                             keys=["img"],
-                            resample=False,
-                            squeeze_end_dims=False,
-                            folder_layout=img_out_path,
+                            spatial_border=(
+                                self.height_width // 2,
+                                self.height_width // 2,
+                                self.depth // 2,
+                            ),
+                            mode="constant",
+                            constant_values=np.amin(case_data["img"]), # -1 so we can re-identify padded area later
+                            value=np.amin(case_data["img"]),
                         ),
-                        SaveImaged(
+                        BorderPadd(
                             keys=["seg"],
-                            resample=False,
-                            squeeze_end_dims=False,
-                            folder_layout=seg_out_path,
+                            spatial_border=(
+                                self.height_width // 2,
+                                self.height_width // 2,
+                                self.depth // 2,
+                            ),
+                            mode="constant",
+                            constant_values=0,
+                            value=0,
                         ),
                     ]
                 )
-                result = crop_lesion_volume(deepcopy(case_data))
-                # print(result)
+                case_data = pad_data(case_data)
+
+                for lesion_nr in self.lesions_to_process:
+                    print("Selecting lesion number", lesion_nr)
+                    self.lesion_nr = lesion_nr
+
+                    img_out_path = FolderLayoutULS(
+                        case_id=case_id,
+                        output_dir=self.output_path + "/imagesTr",
+                        postfix=f"_lesion_{self.lesion_nr:02d}_sample_",
+                        extension=".nii.gz",
+                    )
+                    seg_out_path = FolderLayoutULS(
+                        case_id=case_id,
+                        output_dir=self.output_path + "/labelsTr",
+                        postfix=f"_lesion_{self.lesion_nr:02d}_sample_",
+                        extension=".nii.gz",
+                    )
+
+                    crop_lesion_volume = Compose(
+                        [
+                            Lambdad(keys=["seg"], func=self.lesion_selector),
+                            RandCropByPosNegLabeld(
+                                keys=["img", "seg"],
+                                spatial_size=(
+                                    self.height_width,
+                                    self.height_width,
+                                    self.depth,
+                                ),
+                                label_key="seg",
+                                neg=0,
+                                num_samples=self.num_samples,
+                            ),
+                            SaveImaged(
+                                keys=["img"],
+                                resample=False,
+                                squeeze_end_dims=False,
+                                folder_layout=img_out_path,
+                            ),
+                            SaveImaged(
+                                keys=["seg"],
+                                resample=False,
+                                squeeze_end_dims=False,
+                                folder_layout=seg_out_path,
+                            ),
+                        ]
+                    )
+                    result = crop_lesion_volume(deepcopy(case_data))
+                    # print(result)
+            else:
+                print("already processed")
 
     def instance_segmentation_converter(self, lbl_data):
         meta = lbl_data.meta
