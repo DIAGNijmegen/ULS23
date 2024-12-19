@@ -50,7 +50,7 @@ class FullyAnnotatedLesionExtractor(object):
         self.one_lesion_per_scan = one_lesion_per_scan
 
     def process_dataset(self, data):
-        done = [x.split("_lesion")[0] for x in os.listdir(self.output_path + "/labelsTr")]
+        done = [x.split("_lesion")[0] for x in os.listdir(self.output_path + "/labelsTr")] if os.path.exists(self.output_path + "/labelsTr") else []
         for case in data:
             self.amin = 0
             case_id = case["img"].split("/")[-1].split(".")[0]
