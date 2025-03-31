@@ -1,6 +1,11 @@
 ![ULS23_banner.png](assets%2FULS23_banner.png)
 ### ULS23 Challenge Repository
-Repository for the [Universal Lesion Segmentation Challenge '23](https://uls23.grand-challenge.org/datasets/)
+Repository for the [Universal Lesion Segmentation Challenge '23](https://uls23.grand-challenge.org/datasets/). Challenge paper:
+
+M.J.J. de Grauw, E.Th. Scholten, E.J. Smit, M.J.C.M. Rutten, M. Prokop, B. van Ginneken, A. Hering,  
+*The ULS23 challenge: A baseline model and benchmark dataset for 3D universal lesion segmentation in computed tomography*,  
+Medical Image Analysis, Volume 102, 2025, 103525, ISSN 1361-8415,  
+[https://doi.org/10.1016/j.media.2025.103525](https://doi.org/10.1016/j.media.2025.103525)
 
 ### Labels
 The annotations folder contains the labels for the training data of the ULS23 Challenge.
