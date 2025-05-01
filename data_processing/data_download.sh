@@ -2,7 +2,7 @@
 # This script downloads the datasets from Zenodo using the zenodo-download command.
 # Download zenodo-downloader using "pip install zenodo-downloader"
 # Make sure to set the ZENODO_API_TOKEN environment variable before running this script.
-# Usage: ./download.sh
+# Usage: ./data_download.sh
 # Set the ZENODO_API_TOKEN environment variable
 # 
 # Part 1
